@@ -1,11 +1,11 @@
 package uce.edu.ec.backend.controller;
 
+import uce.edu.ec.backend.model.Book;
 import uce.edu.ec.backend.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/books")
@@ -18,28 +18,32 @@ public class BookController {
         this.service = service;
     }
 
+    // GET
     @GetMapping
-    public ResponseEntity<List<Map<String, Object>>> getBooks(
+    public ResponseEntity<List<Book>> getBooks(
             @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "all") String filter
     ) {
         return ResponseEntity.ok(service.getBooks(search, filter));
     }
 
+    // CREATE
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Book> create(@RequestBody Book body) {
         return ResponseEntity.status(201)
-                .body(service.createBook(body.get("title"), body.get("author")));
+                .body(service.createBook(body.getTitle(), body.getAuthor()));
     }
 
+    // TOGGLE BORROW
     @PutMapping("/{id}/borrow")
-    public ResponseEntity<?> toggle(@PathVariable int id) {
+    public ResponseEntity<Book> toggle(@PathVariable int id) {
         return ResponseEntity.ok(service.toggleBorrow(id));
     }
 
+    // DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable int id) {
         service.delete(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok().build();
     }
 }

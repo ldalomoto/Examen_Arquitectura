@@ -1,19 +1,24 @@
 package uce.edu.ec.backend.model;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "books")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Book {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String title;
     private String author;
     private boolean borrowed;
-
-    public Book() {}
-
-    public Book(Integer id, String title, String author, boolean borrowed) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.borrowed = borrowed;
-    }
-
-    // getters y setters
 }
